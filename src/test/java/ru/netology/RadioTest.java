@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 public class RadioTest {
 
     Radio radio = new Radio();
-
     @Test
     public void shouldGetCurrentStation() {
 
