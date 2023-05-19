@@ -1,107 +1,161 @@
 package ru.netology;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class RadioTest {
 
-    Radio radio = new Radio();
+    private Radio radio;
+
+    @BeforeEach
+    public void reset() {
+        radio = new Radio();
+    }
     @Test
     public void shouldGetCurrentStation() {
         radio.setCurrentStation(0);
         radio.setCurrentStation(-1);
-        radio.setCurrentStation(10);
-        int expected = 0;
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
+        radio.setCurrentStation(11);
+        Assertions.assertEquals(0, radio.getCurrentStation());
     }
 
     @Test
     public void shouldPressNextStation() {
         radio.setCurrentStation(0);
         radio.nextStation();
-        int expected = 1;
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(1, radio.getCurrentStation());
+
+        radio.setCurrentStation(10);
+        radio.nextStation();
+        Assertions.assertEquals(0, radio.getCurrentStation());
+
+        radio.setCurrentStation(11);
+        radio.nextStation();
+        Assertions.assertEquals(1, radio.getCurrentStation());
+
+        radio.setCurrentStation(-1);
+        radio.nextStation();
+        Assertions.assertEquals(0, radio.getCurrentStation());
     }
 
-    @Test
-    public void shouldOverMaxStation() {
-        radio.setCurrentStation(9);
-        radio.nextStation();
-        int expected = 0;
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
-    }
 
     @Test
     void shouldPrevStation() {
         radio.setCurrentStation(4);
         radio.previousStation();
-        int expected = 3;
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(3, radio.getCurrentStation());
     }
 
     @Test
     void shouldBelowMinStation() {
         radio.setCurrentStation(0);
         radio.previousStation();
-        int expected = 9;
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(10, radio.getCurrentStation());
     }
 
     @Test
-    void shouldChangeVolume() {
+    public void shouldGetToMaxStation() {
+        Assertions.assertEquals(10, radio.getMaxStation());
+    }
+
+    @Test
+    public void shouldSetMaxStation() {
+        radio.setMaxStation(-1);
+        radio.setMaxStation(0);
+        radio.setMaxStation(11);
+        Assertions.assertEquals(11, radio.getMaxStation());
+    }
+
+    @Test
+    public void shouldGetToMinStation() {
+        Assertions.assertEquals(0, radio.getMinStation());
+    }
+
+    @Test
+    public void shouldSetMinStation() {
+        radio.setMinStation(-1);
+        radio.setMinStation(0);
+        radio.setMinStation(11);
+        Assertions.assertEquals(11, radio.getMinStation());
+    }
+
+    @Test
+    public void shouldCreateStationsWithLimits() {
+        Radio radio = new Radio(1);
+        Assertions.assertEquals(0, radio.getMaxStation());
+
+        Radio radio1 = new Radio(50);
+        Assertions.assertEquals(49, radio1.getMaxStation());
+
+        Radio radio2 = new Radio(11);
+        Assertions.assertEquals(10, radio2.getMaxStation());
+    }
+
+    @Test
+    public void shouldChangeVolume() {
         radio.setCurrentVolume(77);
-        int expected = 77;
-        int actual = radio.getCurrentVolume();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(77, radio.getCurrentVolume());
     }
 
     @Test
-    void checkingIncorrectVolume() {
+    public void shouldGetMaxVolume() {
+        Assertions.assertEquals(100, radio.getMaxVolume());
+    }
+
+    @Test
+    public void shouldSetMaxVolume() {
+        radio.setMaxVolume(101);
+        radio.setMinVolume(0);
+        Assertions.assertEquals(101, radio.getMaxVolume());
+
+    }
+
+    @Test
+    public void shouldGetMinVolume() {
+        Assertions.assertEquals(0, radio.getMinVolume());
+    }
+
+    @Test
+    public void shouldSetMinVolume() {
+        radio.setMinVolume(1);
+        radio.setMaxVolume(100);
+        Assertions.assertEquals(1, radio.getMinVolume());
+
+    }
+
+    @Test
+    public void checkingIncorrectVolume() {
         radio.setCurrentVolume(-1);
         radio.setCurrentVolume(101);
-        int expected = 0;
-        int actual = radio.getCurrentVolume();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(0, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldIncreaseVolume() {
+    public void shouldIncreaseVolume() {
         radio.setCurrentVolume(77);
         radio.increaseVolume();
-        int expected = 78;
-        int actual = radio.getCurrentVolume();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(78, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldOverMaxVolume1() {
+    public void shouldOverMaxVolume1() {
         radio.setCurrentVolume(100);
         radio.increaseVolume();
-        int expected = 100;
-        int actual = radio.getCurrentVolume();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(100, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldDecreaseVolume() {
+    public void shouldDecreaseVolume() {
         radio.setCurrentVolume(6);
         radio.decreaseVolume();
-        int expected = 5;
-        int actual = radio.getCurrentVolume();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(5, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldBelowMinVolume() {
+    public void shouldBelowMinVolume() {
         radio.setCurrentVolume(0);
         radio.decreaseVolume();
-        int expected = 0;
-        int actual = radio.getCurrentVolume();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(0, radio.getCurrentVolume());
     }
 }
