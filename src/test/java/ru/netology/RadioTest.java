@@ -34,9 +34,6 @@ public class RadioTest {
         radio.nextStation();
         Assertions.assertEquals(1, radio.getCurrentStation());
 
-        radio.setCurrentStation(-1);
-        radio.nextStation();
-        Assertions.assertEquals(0, radio.getCurrentStation());
     }
 
 
@@ -61,7 +58,6 @@ public class RadioTest {
 
     @Test
     public void shouldSetMaxStation() {
-        radio.setMaxStation(-1);
         radio.setMaxStation(0);
         radio.setMaxStation(11);
         Assertions.assertEquals(11, radio.getMaxStation());
@@ -74,7 +70,6 @@ public class RadioTest {
 
     @Test
     public void shouldSetMinStation() {
-        radio.setMinStation(-1);
         radio.setMinStation(0);
         radio.setMinStation(11);
         Assertions.assertEquals(11, radio.getMinStation());
